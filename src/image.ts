@@ -31,6 +31,7 @@ export const imageToSticker = async (
     await bot.sendSticker(chatId, transformedFileBuffer);
   } catch (error) {
     console.error(error);
+
     await bot.sendChatAction(chatId, 'typing');
     await bot.sendMessage(chatId, 'Unsupported image format.');
   }
@@ -58,6 +59,7 @@ export const stickerToImage = async (
     );
   } catch (error) {
     console.error(error);
+
     await bot.sendChatAction(chatId, 'typing');
     await bot.sendMessage(chatId, 'Unsupported image format.');
   }
