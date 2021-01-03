@@ -1,8 +1,9 @@
 import type { PhotoSize } from 'node-telegram-bot-api';
 
-import { bot } from './utils';
+import { bot, downloadFile } from './utils';
 import { imageToSticker, stickerToImage } from './image';
 import { audioToVoice, voiceToAudio } from './audio';
+import { animationToVideo, videoToNote } from './video';
 
 bot.on('photo', async ({ chat: { id }, photo = [] }) => {
   const { file_id: largestFileId } = photo.reduce<PhotoSize>(
@@ -42,6 +43,32 @@ bot.on('voice', async ({ chat: { id }, voice }) => {
   await voiceToAudio(bot, id, voice.file_id);
 });
 
+bot.on('video', async ({ chat: { id }, video }) => {
+  if (!video) {
+    return;
+  }
+
+  await videoToNote(bot, id, video.file_id);
+});
+
+bot.on('animation', async ({ chat: { id }, animation }) => {
+  if (animation?.mime_type !== 'video/mp4') {
+    return;
+  }
+
+  await animationToVideo(bot, id, animation.file_id);
+});
+
+bot.on('video_note', async ({ chat: { id }, video_note }) => {
+  if (!video_note) {
+    return;
+  }
+
+  const fileBuffer = await downloadFile(video_note.file_id);
+
+  await bot.sendVideo(id, fileBuffer);
+});
+
 bot.on('document', async ({ chat: { id }, document }) => {
   if (!document?.mime_type) {
     return;
@@ -55,5 +82,9 @@ bot.on('document', async ({ chat: { id }, document }) => {
 
   if (mimeType.startsWith('audio')) {
     await audioToVoice(bot, id, fileId);
+  }
+
+  if (mimeType.startsWith('video')) {
+    await videoToNote(bot, id, fileId);
   }
 });
