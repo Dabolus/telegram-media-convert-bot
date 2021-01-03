@@ -1,5 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import fetch from 'node-fetch';
+import cp from 'child_process';
+import util from 'util';
 
 if (!process.env.BOT_TOKEN) {
   console.error(
@@ -17,3 +19,5 @@ export const downloadFile = async (fileId: string) => {
 
   return fileBuffer;
 };
+
+export const run = util.promisify(cp.exec);

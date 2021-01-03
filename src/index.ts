@@ -2,6 +2,7 @@ import type { PhotoSize } from 'node-telegram-bot-api';
 
 import { bot } from './utils';
 import { imageToSticker, stickerToImage } from './image';
+import { audioToVoice, voiceToAudio } from './audio';
 
 bot.on('photo', async ({ chat: { id }, photo = [] }) => {
   const { file_id: largestFileId } = photo.reduce<PhotoSize>(
@@ -25,6 +26,22 @@ bot.on('sticker', async ({ chat: { id }, sticker }) => {
   await stickerToImage(bot, id, sticker.file_id);
 });
 
+bot.on('audio', async ({ chat: { id }, audio }) => {
+  if (!audio) {
+    return;
+  }
+
+  await audioToVoice(bot, id, audio.file_id);
+});
+
+bot.on('voice', async ({ chat: { id }, voice }) => {
+  if (!voice) {
+    return;
+  }
+
+  await voiceToAudio(bot, id, voice.file_id);
+});
+
 bot.on('document', async ({ chat: { id }, document }) => {
   if (!document?.mime_type) {
     return;
@@ -34,5 +51,9 @@ bot.on('document', async ({ chat: { id }, document }) => {
 
   if (mimeType.startsWith('image')) {
     await imageToSticker(bot, id, fileId);
+  }
+
+  if (mimeType.startsWith('audio')) {
+    await audioToVoice(bot, id, fileId);
   }
 });

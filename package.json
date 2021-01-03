@@ -9,11 +9,13 @@
     "build": "tsc"
   },
   "dependencies": {
+    "ffmpeg-static": "^4.2.7",
     "node-fetch": "^2.6.1",
     "node-telegram-bot-api": "^0.51.0",
     "sharp": "^0.27.0"
   },
   "devDependencies": {
+    "@types/ffmpeg-static": "^3.0.0",
     "@types/node": "^14.14.16",
     "@types/node-fetch": "^2.5.7",
     "@types/node-telegram-bot-api": "^0.50.4",
