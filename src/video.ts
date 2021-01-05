@@ -24,7 +24,7 @@ export const videoToNote = async (
     const processedFilePath = filePath.replace(/\..+$/, '.processed.mp4');
 
     await run(
-      `${ffmpegPath} -i ${filePath} -i ${videoNoteMaskPath} -filter_complex "[0:v] scale=240:240:force_original_aspect_ratio=decrease,pad=240:240:-1:-1:color=black,setsar=1 [0v]; [0v][1:v] overlay=0:0" -c:a copy ${processedFilePath}`,
+      `${ffmpegPath} -i ${filePath} -i ${videoNoteMaskPath} -filter_complex "[0:v] scale=240:240:force_original_aspect_ratio=increase,crop=240:240 [0v]; [0v][1:v] overlay=0:0" -c:a copy ${processedFilePath}`,
     );
 
     await bot.sendVideoNote(chatId, processedFilePath);
