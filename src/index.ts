@@ -12,16 +12,16 @@ bot.onText(
     await bot.sendMessage(
       id,
       `Hi\\!
-This bot allows you to easily convert a Telegram media to a different one\\.
+Send me a media and I will convert it to a different one\\.
 
-More specifically, it allows you to convert:
+More specifically, I can convert:
 • *Pictures* to *stickers* and viceversa
 • *Audios* to *voice notes* and viceversa
 • *Videos* to *video notes* and viceversa
 • *GIFs* to *videos*
 • *Emojis* to *stickers* \\(experimental\\)
 
-_Note that you can also send pictures, audios, and videos as files\\. The bot will do its best to convert them properly\\._
+_Note that you can also send me pictures, audios, and videos as files\\. I will do my best to convert them properly\\._
 `,
       {
         parse_mode: 'MarkdownV2',
