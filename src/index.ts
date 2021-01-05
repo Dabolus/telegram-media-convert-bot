@@ -36,7 +36,10 @@ bot.onText(
   // - Zero Width Joiner (u200d)
   // - Regional indicator symbols (u1f1e6 to u1f1ff)
   // - Skin modifiers (u1f3fb to u1f3ff)
-  /^[\p{Extended_Pictographic}\u{200d}\u{1f1e6}-\u{1f1ff}\u{1f3fb}-\u{1f3ff}]+$/u,
+  new RegExp(
+    `^(?:@${botUsername})?\\s*[\\p{Extended_Pictographic}\\u{200d}\\u{1f1e6}-\\u{1f1ff}\\u{1f3fb}-\\u{1f3ff}]+\\s*$`,
+    'u',
+  ),
   async ({ chat: { id }, text = '' }) => {
     await emojiToSticker(bot, id, text);
   },
