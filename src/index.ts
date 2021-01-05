@@ -1,9 +1,21 @@
 import type { PhotoSize } from 'node-telegram-bot-api';
 
 import { bot, downloadFile } from './utils';
-import { imageToSticker, stickerToImage } from './image';
+import { emojiToSticker, imageToSticker, stickerToImage } from './image';
 import { audioToVoice, voiceToAudio } from './audio';
 import { animationToVideo, videoToNote } from './video';
+
+bot.onText(
+  // This regex matches a combination of:
+  // - Extended pictographics (i.e. all the pictographic emojis without the character based ones)
+  // - Zero Width Joiner (u200d)
+  // - Regional indicator symbols (u1f1e6 to u1f1ff)
+  // - Skin modifiers (u1f3fb to u1f3ff)
+  /^[\p{Extended_Pictographic}\u{200d}\u{1f1e6}-\u{1f1ff}\u{1f3fb}-\u{1f3ff}]+$/u,
+  async ({ chat: { id }, text = '' }) => {
+    await emojiToSticker(bot, id, text);
+  },
+);
 
 bot.on('photo', async ({ chat: { id }, photo = [] }) => {
   const { file_id: largestFileId } = photo.reduce<PhotoSize>(
