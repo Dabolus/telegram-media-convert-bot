@@ -1,9 +1,34 @@
 import type { PhotoSize } from 'node-telegram-bot-api';
 
-import { bot, downloadFile } from './utils';
+import { bot, botUsername, downloadFile } from './utils';
 import { emojiToSticker, imageToSticker, stickerToImage } from './image';
 import { audioToVoice, voiceToAudio } from './audio';
 import { animationToVideo, videoToNote } from './video';
+
+bot.onText(
+  new RegExp(`^\\/start(?:@${botUsername})?\s*$`),
+  async ({ chat: { id } }) => {
+    await bot.sendChatAction(id, 'typing');
+    await bot.sendMessage(
+      id,
+      `Hi\\!
+This bot allows you to easily convert a Telegram media to a different one\\.
+
+More specifically, it allows you to convert:
+• *Pictures* to *stickers* and viceversa
+• *Audios* to *voice notes* and viceversa
+• *Videos* to *video notes* and viceversa
+• *GIFs* to *videos*
+• *Emojis* to *stickers* \\(experimental\\)
+
+_Note that you can also send pictures, audios, and videos as files\\. The bot will do its best to convert them properly\\._
+`,
+      {
+        parse_mode: 'MarkdownV2',
+      },
+    );
+  },
+);
 
 bot.onText(
   // This regex matches a combination of:

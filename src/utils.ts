@@ -12,6 +12,8 @@ if (!process.env.BOT_TOKEN) {
 
 export const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
+export const botUsername = process.env.BOT_USERNAME || 'TgMediaConvertBot';
+
 export const downloadFile = async (fileId: string) => {
   const fileLink = await bot.getFileLink(fileId);
   const fileReq = await fetch(fileLink);
